@@ -3,133 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TechRadarHungary – Termékajánlók</title>
+  <title>TechRadarHungary – Gamer és Háztartási Ajánlók</title>
   <style>
-    :root {
-      --main-color: #0d6efd;
-      --bg-color: #f5f5f5;
-      --text-color: #222;
-      --card-bg: #fff;
+    * {
+      box-sizing: border-box;
     }
-
     body {
+      font-family: Arial, sans-serif;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+      background-color: #f4f4f4;
+      color: #333;
     }
-
     header {
-      background-color: var(--main-color);
+      background-color: #24292e;
       color: white;
-      padding: 1rem 2rem;
+      padding: 1rem;
       text-align: center;
     }
-
-    header h1 {
-      margin: 0;
-    }
-
     .controls {
-      max-width: 1200px;
-      margin: 2rem auto 1rem;
-      padding: 0 1rem;
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
+      justify-content: center;
       gap: 1rem;
+      padding: 1rem;
+      background: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-
-    .controls input, .controls button {
-      padding: 0.6rem 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-
     .controls input {
-      flex: 1;
+      padding: 0.5rem;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-
-    .controls .filter-btn {
-      background-color: #fff;
-      color: var(--main-color);
-      border: 1px solid var(--main-color);
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
       cursor: pointer;
     }
-
-    .controls .filter-btn.active, .controls .filter-btn:hover {
-      background-color: var(--main-color);
-      color: #fff;
+    .filter-btn.active {
+      background-color: #0056b3;
     }
-
     .container {
-      padding: 1rem;
-      max-width: 1200px;
-      margin: auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
+      gap: 1rem;
+      padding: 2rem;
     }
-
     .card {
-      background-color: var(--card-bg);
-      border-radius: 12px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-      transition: 0.2s ease;
+      transition: transform 0.2s;
     }
-
     .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      transform: translateY(-4px);
     }
-
     .card img {
       width: 100%;
       height: 180px;
       object-fit: cover;
     }
-
     .card-content {
       padding: 1rem;
     }
-
-    .card h2 {
-      font-size: 1.1rem;
-      margin: 0 0 0.5rem;
+    .card-content h2 {
+      font-size: 1rem;
+      margin: 0 0 0.5rem 0;
     }
-
-    .card p {
-      font-size: 0.95rem;
-      margin: 0 0 1rem;
+    .card-content p {
+      font-size: 0.9rem;
+      margin: 0.5rem 0;
     }
-
     .price {
       font-weight: bold;
-      margin-bottom: 1rem;
+      color: #28a745;
+      margin-bottom: 0.5rem;
     }
-
     .btn {
       display: inline-block;
-      background-color: var(--main-color);
+      background: #28a745;
       color: white;
       padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 6px;
       text-decoration: none;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #0a58ca;
-    }
-
-    @media (max-width: 600px) {
-      .controls {
-        flex-direction: column;
-      }
+      border-radius: 4px;
     }
   </style>
 </head>
@@ -140,152 +100,68 @@
 </header>
 
 <div class="controls">
-  <input type="text" id="search" placeholder="Keresés terméknév vagy leírás alapján..." />
+  <input type="text" id="search" placeholder="Keresés...">
   <button class="filter-btn" data-filter="all">Összes</button>
   <button class="filter-btn" data-filter="gamer">Gamer</button>
   <button class="filter-btn" data-filter="household">Háztartási</button>
 </div>
 
-<div class="container" id="product-list">
-
-  <!-- Példatermékek -->
-  <!-- A továbbiakat lent JS-ből generáljuk -->
-
-</div>
+<div class="container" id="product-list"></div>
 
 <script>
-  const products = [
-    {
-      name: "Logitech G502 HERO Gamer Egér",
-      desc: "11 programozható gomb, RGB, 16000 DPI.",
-      img: "https://cdn.pixabay.com/photo/2015/05/08/14/47/mouse-759118_1280.jpg",
-      price: "18 990 Ft",
-      category: "gamer",
-      link: "#"
-    },
-    {
-      name: "ASUS TUF Gaming F15 Laptop",
-      desc: "Intel i5, RTX 3050, 144Hz kijelző.",
-      img: "https://cdn.pixabay.com/photo/2014/05/02/21/50/home-office-336377_1280.jpg",
-      price: "359 990 Ft",
-      category: "gamer",
-      link: "#"
-    },
-    {
-      name: "Samsung Odyssey G3 Monitor",
-      desc: "24”, 144Hz, Full HD.",
-      img: "https://cdn.pixabay.com/photo/2014/09/27/13/44/monitor-463898_1280.jpg",
-      price: "69 990 Ft",
-      category: "gamer",
-      link: "#"
-    },
-    {
-      name: "Xiaomi Air Fryer",
-      desc: "Egészséges sütés olaj nélkül, 3.5L kapacitás.",
-      img: "https://cdn.pixabay.com/photo/2021/03/16/14/34/fryer-6101467_1280.jpg",
-      price: "28 990 Ft",
-      category: "household",
-      link: "#"
-    },
-    {
-      name: "Dyson V8 Porszívó",
-      desc: "Akkumulátoros, erős szívóerő, könnyű kezelés.",
-      img: "https://cdn.pixabay.com/photo/2016/11/29/06/17/vacuum-cleaner-1869758_1280.jpg",
-      price: "119 990 Ft",
-      category: "household",
-      link: "#"
-    },
-    {
-      name: "Razer Kraken Gaming Headset",
-      desc: "Kiváló hangzás, kényelmes viselet, zöld dizájn.",
-      img: "https://cdn.pixabay.com/photo/2018/03/01/14/55/gaming-3199217_1280.jpg",
-      price: "24 990 Ft",
-      category: "gamer",
-      link: "#"
-    },
-    {
-      name: "LG Ultrawide Monitor",
-      desc: "29”, IPS, multitaskinghoz ideális.",
-      img: "https://cdn.pixabay.com/photo/2022/11/02/12/24/monitor-7565703_1280.jpg",
-      price: "89 990 Ft",
-      category: "gamer",
-      link: "#"
-    },
-    {
-      name: "Bosch Konyhai Robotgép",
-      desc: "Szeletel, aprít, kever, dagaszt.",
-      img: "https://cdn.pixabay.com/photo/2016/03/23/05/10/blender-1277092_1280.jpg",
-      price: "42 990 Ft",
-      category: "household",
-      link: "#"
-    },
-    {
-      name: "MSI GeForce RTX 3060 Ventus OC",
-      desc: "12GB GDDR6, Ray Tracing, DLSS.",
-      img: "https://cdn.pixabay.com/photo/2020/09/20/18/36/graphics-card-5588391_1280.jpg",
-      price: "149 990 Ft",
-      category: "gamer",
-      link: "#"
-    },
-    {
-      name: "Electrolux EKM3700 Robotgép",
-      desc: "Keverés, dagasztás, háztartási segítő.",
-      img: "https://cdn.pixabay.com/photo/2018/10/05/18/38/kitchen-3723606_1280.jpg",
-      price: "49 990 Ft",
-      category: "household",
-      link: "#"
-    }
-  ];
+const products = [
+  { name: "Logitech G Pro X Superlight", desc: "Ultra-light gamer egér", price: "49 990 Ft", category: "gamer", img: "https://cdn.pixabay.com/photo/2015/05/08/14/47/mouse-759118_1280.jpg", link: "#" },
+  { name: "Razer BlackWidow V3", desc: "Mechanikus gamer billentyűzet", price: "39 990 Ft", category: "gamer", img: "https://cdn.pixabay.com/photo/2015/01/08/18/26/keyboard-593350_1280.jpg", link: "#" },
+  { name: "ASUS TUF Gaming F15", desc: "Gamer laptop RTX 3050-tel", price: "359 990 Ft", category: "gamer", img: "https://cdn.pixabay.com/photo/2014/05/02/21/50/home-office-336377_1280.jpg", link: "#" },
+  { name: "Samsung Odyssey G3", desc: "24” gamer monitor 144Hz", price: "69 990 Ft", category: "gamer", img: "https://cdn.pixabay.com/photo/2014/09/27/13/44/monitor-463898_1280.jpg", link: "#" },
+  { name: "Xiaomi Air Fryer", desc: "Olaj nélküli forrólevegős sütő", price: "28 990 Ft", category: "household", img: "https://cdn.pixabay.com/photo/2021/03/16/14/34/fryer-6101467_1280.jpg", link: "#" },
+  { name: "Tefal Serpenyő", desc: "Tapadásmentes bevonattal", price: "6 990 Ft", category: "household", img: "https://cdn.pixabay.com/photo/2018/04/14/17/56/frying-pan-3318310_1280.jpg", link: "#" },
+  { name: "Dell XPS 13", desc: "Kompakt, prémium laptop", price: "479 990 Ft", category: "gamer", img: "https://cdn.pixabay.com/photo/2016/11/21/16/17/laptop-1842297_1280.jpg", link: "#" },
+  { name: "SteelSeries Arctis 5", desc: "RGB gamer fejhallgató", price: "35 990 Ft", category: "gamer", img: "https://cdn.pixabay.com/photo/2016/03/09/09/17/headphones-1245713_1280.jpg", link: "#" },
+  { name: "Samsung Smart TV 55\"", desc: "4K UHD, HDR, okos funkciók", price: "189 990 Ft", category: "household", img: "https://cdn.pixabay.com/photo/2015/09/05/21/51/television-925571_1280.jpg", link: "#" },
+  { name: "Dyson V11 Porszívó", desc: "Vezeték nélküli, erős szívás", price: "159 990 Ft", category: "household", img: "https://cdn.pixabay.com/photo/2021/02/10/10/42/vacuum-cleaner-6000753_1280.jpg", link: "#" }
+];
 
-  const container = document.getElementById("product-list");
-  const searchInput = document.getElementById("search");
-  const filterBtns = document.querySelectorAll(".filter-btn");
+const list = document.getElementById("product-list");
+const search = document.getElementById("search");
+const filterBtns = document.querySelectorAll(".filter-btn");
+let activeFilter = "all";
 
-  function renderProducts(filter = "all", search = "") {
-    container.innerHTML = "";
-    const filtered = products.filter(p => {
-      const matchCategory = filter === "all" || p.category === filter;
-      const matchSearch = p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
-      return matchCategory && matchSearch;
-    });
-
-    if (filtered.length === 0) {
-      container.innerHTML = "<p>Nincs találat.</p>";
-      return;
-    }
-
-    filtered.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${p.img}" alt="${p.name}" />
-        <div class="card-content">
-          <h2>${p.name}</h2>
-          <p>${p.desc}</p>
-          <div class="price">${p.price}</div>
-          <a class="btn" href="${p.link}" target="_blank">Megnézem az eMAG-on</a>
-        </div>
-      `;
-      container.appendChild(card);
-    });
+function renderProducts() {
+  list.innerHTML = "";
+  const searchTerm = search.value.toLowerCase();
+  const filtered = products.filter(p => (activeFilter === "all" || p.category === activeFilter) && (p.name.toLowerCase().includes(searchTerm) || p.desc.toLowerCase().includes(searchTerm)));
+  if (filtered.length === 0) {
+    list.innerHTML = "<p>Nincs találat.</p>";
+    return;
   }
-
-  searchInput.addEventListener("input", e => {
-    renderProducts(activeFilter, e.target.value.toLowerCase());
+  filtered.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${p.img}" alt="${p.name}" />
+      <div class="card-content">
+        <h2>${p.name}</h2>
+        <p>${p.desc}</p>
+        <div class="price">${p.price}</div>
+        <a class="btn" href="${p.link}" target="_blank">Megnézem az eMAG-on</a>
+      </div>
+    `;
+    list.appendChild(card);
   });
+}
 
-  let activeFilter = "all";
-  filterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      filterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      activeFilter = btn.dataset.filter;
-      renderProducts(activeFilter, searchInput.value.toLowerCase());
-    });
+search.addEventListener("input", renderProducts);
+filterBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeFilter = btn.dataset.filter;
+    renderProducts();
   });
+});
 
-  renderProducts();
+renderProducts();
 </script>
-
 </body>
 </html>
